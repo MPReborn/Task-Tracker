@@ -1,26 +1,40 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import TaskList from './TaskList';
+import { v4 as uuidv4 } from 'uuid';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tasks: [
+        {name: "task 1", id: 1}
+      ],
+      associateTasks: []
+    }
+  }
+
+  addAssociateTask = (task) => {
+    //generates a new id, for the list
+    task.id = uuidv4();
+    this.setState({
+      associateTasks: this.state.associateTasks.concat(task),
+    });
+  }
+
+  removeAssociateTask = (task) => {
+    this.setState({
+      associateTasks: [], //this.state.associateTasks.filter(listTask => listTask.id === task.id),
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <TaskList tasks={this.state.tasks} buttonAction={this.addAssociateTask} buttonText={"add"} />
+        <TaskList tasks={this.state.associateTasks} buttonAction={this.removeAssociateTask} buttonText={"remove"} />
+      </div>
+    );
+  }
 }
 
 export default App;
